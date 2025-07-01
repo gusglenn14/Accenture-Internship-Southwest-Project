@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Shopping Data Comfort Levels</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8, #1e40af, #2563eb);
+            border-radius: 20px 20px 0 0;
+        }
+
+        h1 {
+            color: #1e40af;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            padding: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 4px solid;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+        }
+
+        .stat-card.very-uncomfortable {
+            border-left-color: #1e40af;
+        }
+
+        .stat-card.somewhat-uncomfortable {
+            border-left-color: #3b82f6;
+        }
+
+        .stat-card.somewhat-comfortable {
+            border-left-color: #60a5fa;
+        }
+
+        .stat-card.very-comfortable {
+            border-left-color: #93c5fd;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .insight-box {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .insight-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>US Adults' Comfort with AI Shopping Data</h1>
+        <p class="subtitle">Enhanced Shopping Experiences and Recommendations • September 2024</p>
+        
+        <div class="chart-container">
+            <canvas id="comfortChart"></canvas>
+        </div>
+
+        <div class="insight-box">
+            <div class="insight-title">Key Insight</div>
+            <div class="insight-text">
+                76% of US adults are uncomfortable sharing personal data with AI tools for shopping, highlighting significant privacy concerns in the retail AI space.
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card very-uncomfortable">
+                <div class="stat-number" style="color: #1e40af;">52%</div>
+                <div class="stat-label">Very Uncomfortable</div>
+            </div>
+            <div class="stat-card somewhat-uncomfortable">
+                <div class="stat-number" style="color: #3b82f6;">24%</div>
+                <div class="stat-label">Somewhat Uncomfortable</div>
+            </div>
+            <div class="stat-card somewhat-comfortable">
+                <div class="stat-number" style="color: #60a5fa;">17%</div>
+                <div class="stat-label">Somewhat Comfortable</div>
+            </div>
+            <div class="stat-card very-comfortable">
+                <div class="stat-number" style="color: #93c5fd;">7%</div>
+                <div class="stat-label">Very Comfortable</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <strong>Source:</strong> Pew Research Center and CivicScience, conducted by CivicScience, Oct 17, 2024<br>
+            <strong>Note:</strong> n=1,841 ages 18+ • Percentages may not sum to 100% due to rounding
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('comfortChart').getContext('2d');
+        
+        const data = {
+            labels: ['Very Uncomfortable', 'Somewhat Uncomfortable', 'Somewhat Comfortable', 'Very Comfortable'],
+            datasets: [{
+                data: [52, 24, 17, 7],
+                backgroundColor: [
+                    '#1e40af',
+                    '#3b82f6', 
+                    '#60a5fa',
+                    '#93c5fd'
+                ],
+                borderWidth: 0,
+                hoverOffset: 15
+            }]
+        };
+
+        const config = {
+            type: 'doughnut',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 14,
+                                weight: '500'
+                            },
+                            color: '#1e40af',
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderWidth: 0,
+                        cornerRadius: 10,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                },
+                cutout: '60%',
+                animation: {
+                    animateRotate: true,
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'point'
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+
+        // Add subtle animations on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Stagger the animation
+        setTimeout(() => {
+            document.querySelectorAll('.stat-card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        }, 500);
+    </script>
+</body>
+</html>
