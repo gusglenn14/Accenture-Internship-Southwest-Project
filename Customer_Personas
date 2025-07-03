@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Personas - Transparent Skies</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .slide-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+        
+        .persona-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            border-left: 5px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .persona-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .persona-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            opacity: 0.1;
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+        
+        .premium-traveler {
+            border-left-color: #ff6b6b;
+        }
+        .premium-traveler::before {
+            background: #ff6b6b;
+        }
+        
+        .family-organizer {
+            border-left-color: #4ecdc4;
+        }
+        .family-organizer::before {
+            background: #4ecdc4;
+        }
+        
+        .business-commuter {
+            border-left-color: #45b7d1;
+        }
+        .business-commuter::before {
+            background: #45b7d1;
+        }
+        
+        .leisure-explorer {
+            border-left-color: #96ceb4;
+        }
+        .leisure-explorer::before {
+            background: #96ceb4;
+        }
+        
+        .budget-conscious {
+            border-left-color: #feca57;
+        }
+        .budget-conscious::before {
+            background: #feca57;
+        }
+        
+        .accessibility-focused {
+            border-left-color: #a55eea;
+        }
+        .accessibility-focused::before {
+            background: #a55eea;
+        }
+        
+        .persona-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .persona-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .persona-subtitle {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .persona-details {
+            line-height: 1.6;
+        }
+        
+        .persona-details strong {
+            color: #2c3e50;
+        }
+        
+        .benefit-list {
+            margin-top: 15px;
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        .benefit-list li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .benefit-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .stats-bar {
+            background: #34495e;
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        .stats-bar span {
+            margin: 0 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1>Target Customer Personas</h1>
+            <p>Who Benefits Most from Transparent Skies AI Personalization</p>
+        </div>
+        
+        <div class="personas-grid">
+            <div class="persona-card premium-traveler">
+                <div class="persona-icon">✈️</div>
+                <div class="persona-title">Premium Travelers</div>
+                <div class="persona-subtitle">"The Luxury Seekers"</div>
+                <div class="persona-details">
+                    <strong>Profile:</strong> High-spending customers who prioritize comfort and premium experiences. Often fly Business Select or purchase EarlyBird Check-In.
+                    <ul class="benefit-list">
+                        <li>Personalized upgrade recommendations</li>
+                        <li>Premium lounge and dining suggestions</li>
+                        <li>Exclusive early access to new routes</li>
+                        <li>Concierge-level rebooking during disruptions</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="persona-card family-organizer">
+                <div class="persona-icon">👨‍👩‍👧‍👦</div>
+                <div class="persona-title">Family Trip Organizers</div>
+                <div class="persona-subtitle">"The Coordinators"</div>
+                <div class="persona-details">
+                    <strong>Profile:</strong> Parents or guardians managing complex multi-passenger bookings with varying needs and preferences.
+                    <ul class="benefit-list">
+                        <li>Seat grouping optimization for families</li>
+                        <li>Kid-friendly flight timing suggestions</li>
+                        <li>Gate and amenity recommendations</li>
+                        <li>Coordinated boarding and baggage alerts</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="persona-card business-commuter">
+                <div class="persona-icon">💼</div>
+                <div class="persona-title">Business Commuters</div>
+                <div class="persona-subtitle">"The Efficiency Experts"</div>
+                <div class="persona-details">
+                    <strong>Profile:</strong> Frequent flyers who value time-saving features and predictable travel experiences for work commitments.
+                    <ul class="benefit-list">
+                        <li>Predictive delay notifications</li>
+                        <li>Optimal connection recommendations</li>
+                        <li>Mobile boarding pass priorities</li>
+                        <li>Meeting-aware rebooking suggestions</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="persona-card leisure-explorer">
+                <div class="persona-icon">🌎</div>
+                <div class="persona-title">Leisure Explorers</div>
+                <div class="persona-subtitle">"The Adventure Seekers"</div>
+                <div class="persona-details">
+                    <strong>Profile:</strong> Vacation travelers looking for unique experiences and willing to try new destinations based on personalized recommendations.
+                    <ul class="benefit-list">
+                        <li>Destination discovery based on preferences</li>
+                        <li>Seasonal route and fare recommendations</li>
+                        <li>Local experience and activity suggestions</li>
+                        <li>Weather-optimized travel timing</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="persona-card budget-conscious">
+                <div class="persona-icon">💰</div>
+                <div class="persona-title">Budget-Conscious Travelers</div>
+                <div class="persona-subtitle">"The Value Maximizers"</div>
+                <div class="persona-details">
+                    <strong>Profile:</strong> Price-sensitive customers who want to maximize value from Southwest's low-fare promise and Rapid Rewards program.
+                    <ul class="benefit-list">
+                        <li>Optimal booking timing for lowest fares</li>
+                        <li>Points maximization strategies</li>
+                        <li>Alternative date/route suggestions</li>
+                        <li>Free amenity location recommendations</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="persona-card accessibility-focused">
+                <div class="persona-icon">♿</div>
+                <div class="persona-title">Accessibility-Focused Travelers</div>
+                <div class="persona-subtitle">"The Inclusive Journeyers"</div>
+                <div class="persona-details">
+                    <strong>Profile:</strong> Passengers with mobility, sensory, or other accessibility needs who benefit from proactive assistance and customized travel planning.
+                    <ul class="benefit-list">
+                        <li>Accessible seating and facility mapping</li>
+                        <li>Assistance coordination and reminders</li>
+                        <li>Barrier-free route recommendations</li>
+                        <li>Specialized service notifications</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-bar">
+            <span>130M+ Annual Passengers</span>
+            <span>72% Repeat Customers</span>
+            <span>Multiple Personas Per Booking</span>
+            <span>Cross-Segment Opportunities</span>
+        </div>
+    </div>
+</body>
+</html>
