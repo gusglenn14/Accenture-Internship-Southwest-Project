@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transparent Skies - Southwest Airlines</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #304cb2 0%, #1e3a8a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .phone-mockup {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            overflow-y: auto;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .header {
+            background: #304cb2;
+            color: white;
+            padding: 50px 20px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            color: #304cb2;
+            border-bottom-color: #304cb2;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .card h3 {
+            color: #304cb2;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .trust-meter {
+            background: #f0f0f0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .trust-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b 0%, #ffd93d 50%, #4ecdc4 100%);
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        .btn {
+            background: #304cb2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #304cb2;
+            border: 2px solid #304cb2;
+        }
+
+        .btn-secondary:hover {
+            background: #304cb2;
+            color: white;
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: #e8f2ff;
+            color: #304cb2;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .flight-card {
+            background: linear-gradient(135deg, #304cb2 0%, #1e3a8a 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .flight-route {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .airport-code {
+            font-size: 24px;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .flight-arrow {
+            padding: 0 16px;
+            opacity: 0.8;
+        }
+
+        .flight-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #304cb2;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(26px);
+        }
+
+        .preference-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .preference-item:last-child {
+            border-bottom: none;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            padding: 8px 0;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .nav-item.active {
+            color: #304cb2;
+        }
+
+        .nav-item:hover {
+            background: #f8f9fa;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .points-display {
+            background: linear-gradient(135deg, #ffd93d 0%, #ff6b6b 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .points-number {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .settings-group {
+            margin-bottom: 24px;
+        }
+
+        .settings-group h4 {
+            color: #304cb2;
+            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .explanation-box {
+            background: #e8f2ff;
+            border-left: 4px solid #304cb2;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .explanation-title {
+            font-weight: 600;
+            color: #304cb2;
+            margin-bottom: 8px;
+        }
+
+        .community-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #304cb2;
+        }
+
+        .feedback-item {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #304cb2;
+        }
+
+        .feedback-rating {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .star {
+            color: #ffd93d;
+            font-size: 16px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0%, 33% { content: '.'; }
+            34%, 66% { content: '..'; }
+            67%, 100% { content: '...'; }
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online { background: #4ecdc4; }
+        .status-processing { background: #ffd93d; }
+        .status-offline { background: #ff6b6b; }
+
+        .page-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #304cb2;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-mockup">
+        <div class="screen">
+            <!-- Home Page -->
+            <div class="page active" id="home">
+                <div class="header">
+                    <h1>Transparent Skies</h1>
+                    <p>Your AI, Your Choice, Your Sky</p>
+                </div>
+                
+                <div class="content">
+                    <div class="flight-card">
+                        <div class="flight-route">
+                            <div class="airport-code">DFW</div>
+                            <div class="flight-arrow">✈️</div>
+                            <div class="airport-code">LAX</div>
+                        </div>
+                        <div class="flight-details">
+                            <div>Dec 15, 2024 • 2:30 PM</div>
+                            <div>$159 <span class="ai-badge">AI Recommended</span></div>
+                        </div>
+                    </div>
+
+                    <div class="alert">
+                        <div class="alert-icon">ℹ️</div>
+                        <div>AI found 3 better flight options based on your preferences</div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Rewards Dashboard</h3>
+                        <p>Your loyalty status and achievements</p>
+                        <div class="trust-meter">
+                            <div class="trust-fill" style="width: 78%"></div>
+                        </div>
+                        <p style="font-size: 14px; color: #666;">78% - Good transparency</p>
+                        <button class="btn btn-secondary">View Details</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Recent AI Decisions</h3>
+                        <div class="explanation-box">
+                            <div class="explanation-title">Flight Recommendation</div>
+                            <p>Suggested DFW→LAX flight based on your preference for afternoon departures and budget under $200</p>
+                        </div>
+                        <button class="btn btn-secondary">See All Decisions</button>
+                    </div>
+
+                    <div class="points-display">
+                        <div class="points-number"></div>
+                        <div>Trust Points Earned</div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item active" onclick="showPage('home')">
+                        🏠<br>Home
+                    </div>
+                    <div class="nav-item" onclick="showPage('flights')">
+                        ✈️<br>Flights
+                    </div>
+                    <div class="nav-item" onclick="showPage('trust')">
+                        🛡️<br>Trust
+                    </div>
+                    <div class="nav-item" onclick="showPage('community')">
+                        👥<br>Community
+                    </div>
+                    <div class="nav-item" onclick="showPage('settings')">
+                        ⚙️<br>Settings
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flights Page -->
+            <div class="page" id="flights">
+                <div class="header">
+                    <button class="back-btn" onclick="showPage('home')">← Back</button>
+                    <h1>Flight Search</h1>
+                    <p>AI-powered with full transparency</p>
+                </div>
+                
+                <div class="content">
+                    <div class="nav-tabs">
+                        <button class="nav-tab active">Search</button>
+                        <button class="nav-tab">My Trips</button>
+                        <button class="nav-tab">Deals</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Smart Search <span class="ai-badge">AI Enhanced</span></h3>
+                        <div style="margin-bottom: 16px;">
+                            <input type="text" placeholder="From: Dallas (DFW)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 8px;">
+                            <input type="text" placeholder="To: Los Angeles (LAX)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 8px;">
+                            <input type="date" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                        </div>
+                        <button class="btn">Search Flights</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>AI Suggestions</h3>
+                        <div class="explanation-box">
+                            <div class="explanation-title">Why these suggestions?</div>
+                            <p>Based on your travel history: preference for afternoon flights, budget-conscious choices, and loyalty to Southwest</p>
+                        </div>
+                        
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin: 12px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>DFW → LAX</strong><br>
+                                    <span style="color: #666;">Dec 15 • 2:30 PM - 4:45 PM</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <strong>$159</strong><br>
+                                    <span style="color: #4ecdc4; font-size: 12px;">✓ Best Match</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin: 12px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>DFW → LAX</strong><br>
+                                    <span style="color: #666;">Dec 15 • 6:15 PM - 8:30 PM</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <strong>$149</strong><br>
+                                    <span style="color: #ffd93d; font-size: 12px;">💰 Best Price</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Predictive Insights</h3>
+                        <p><span class="status-indicator status-processing"></span>Price likely to increase by 15% in next 24 hours</p>
+                        <p><span class="status-indicator status-online"></span>On-time performance: 92% for this route</p>
+                        <p><span class="status-indicator status-online"></span>Weather conditions: Clear skies expected</p>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="showPage('home')">
+                        🏠<br>Home
+                    </div>
+                    <div class="nav-item active" onclick="showPage('flights')">
+                        ✈️<br>Flights
+                    </div>
+                    <div class="nav-item" onclick="showPage('trust')">
+                        🛡️<br>Trust
+                    </div>
+                    <div class="nav-item" onclick="showPage('community')">
+                        👥<br>Community
+                    </div>
+                    <div class="nav-item" onclick="showPage('settings')">
+                        ⚙️<br>Settings
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust Dashboard -->
+            <div class="page" id="trust">
+                <div class="header">
+                    <button class="back-btn" onclick="showPage('home')">← Back</button>
+                    <h1>Trust Dashboard</h1>
+                    <p>Full transparency into AI decisions</p>
+                </div>
+                
+                <div class="content">
+                    <div class="nav-tabs">
+                        <button class="nav-tab active">Overview</button>
+                        <button class="nav-tab">Decisions</button>
+                        <button class="nav-tab">Data Usage</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Your Trust Level</h3>
+                        <div class="trust-meter">
+                            <div class="trust-fill" style="width: 65%"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                            <span style="font-size: 12px; color: #666;">Low</span>
+                            <span style="font-size: 14px; font-weight: 600; color: #304cb2;">65% to next tier</span>
+                            <span style="font-size: 12px; color: #666;">High</span>
+                        </div>
+                        <p style="margin-top: 12px; color: #666;">You have good transparency with AI decisions. Consider enabling more features for better personalization.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Recent AI Decisions</h3>
+                        <div class="explanation-box">
+                            <div class="explanation-title">Flight Recommendation Engine</div>
+                            <p><strong>Decision:</strong> Recommended DFW→LAX flight at 2:30 PM</p>
+                            <p><strong>Reasoning:</strong> Your past 5 bookings show preference for afternoon departures (2-4 PM), budget under $200, and direct flights when available</p>
+                            <p><strong>Data Used:</strong> Travel history, price preferences, time preferences</p>
+                        </div>
+
+                        <div class="explanation-box">
+                            <div class="explanation-title">Seat Assignment Algorithm</div>
+                            <p><strong>Decision:</strong> Pre-selected aisle seats for upcoming flights</p>
+                            <p><strong>Reasoning:</strong> 90% of your previous selections were aisle seats, you're 6'2" tall</p>
+                            <p><strong>Data Used:</strong> Seating history, profile information</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Data Transparency</h3>
+                        <div class="community-stat">
+                            <div>
+                                <div>Travel History</div>
+                                <div style="font-size: 12px; color: #666;">Last 12 months</div>
+                            </div>
+                            <div class="stat-value">✓</div>
+                        </div>
+                        <div class="community-stat">
+                            <div>
+                                <div>Location Data</div>
+                                <div style="font-size: 12px; color: #666;">Current location only</div>
+                            </div>
+                            <div class="stat-value">✓</div>
+                        </div>
+                        <div class="community-stat">
+                            <div>
+                                <div>External Data</div>
+                                <div style="font-size: 12px; color: #666;">Weather, delays</div>
+                            </div>
+                            <div class="stat-value">✓</div>
+                        </div>
+                        <div class="community-stat">
+                            <div>
+                                <div>Third-party Sharing</div>
+                                <div style="font-size: 12px; color: #666;">Disabled</div>
+                            </div>
+                            <div class="stat-value">✗</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Trust Actions</h3>
+                        <button class="btn btn-secondary">Request Data Export</button>
+                        <button class="btn btn-secondary" style="margin-top: 8px;">Review AI Decisions</button>
+                        <button class="btn" style="margin-top: 8px;">Renew Annual Consent</button>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="showPage('home')">
+                        🏠<br>Home
+                    </div>
+                    <div class="nav-item" onclick="showPage('flights')">
+                        ✈️<br>Flights
+                    </div>
+                    <div class="nav-item active" onclick="showPage('trust')">
+                        🛡️<br>Trust
+                    </div>
+                    <div class="nav-item" onclick="showPage('community')">
+                        👥<br>Community
+                    </div>
+                    <div class="nav-item" onclick="showPage('settings')">
+                        ⚙️<br>Settings
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Page -->
+            <div class="page" id="community">
+                <div class="header">
+                    <button class="back-btn" onclick="showPage('home')">← Back</button>
+                    <h1>Travel Community</h1>
+                    <p>Collective intelligence & insights</p>
+                </div>
+                
+                <div class="content">
+                    <div class="nav-tabs">
+                        <button class="nav-tab active">Intel</button>
+                        <button class="nav-tab">Feedback</button>
+                        <button class="nav-tab">Advisory</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Travel Intel Network</h3>
+                        <p style="margin-bottom: 16px;">Real-time insights from verified travelers</p>
+                        
+                        <div class="feedback-item">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <strong>DFW Terminal C</strong>
+                                <span style="font-size: 12px; color: #666;">2 hours ago</span>
+                            </div>
+                            <p style="font-size: 14px;">Security wait time: 15 minutes. Gate A12 has power outlets available.</p>
+                            <div style="margin-top: 8px;">
+                                <span style="color: #4ecdc4; font-size: 12px;">✓ Verified Traveler</span>
+                                <span style="margin-left: 16px; color: #666; font-size: 12px;">👍 8 helpful</span>
+                            </div>
+                        </div>
+
+                        <div class="feedback-item">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <strong>LAX Terminal 1</strong>
+                                <span style="font-size: 12px; color: #666;">4 hours ago</span>
+                            </div>
+                            <p style="font-size: 14px;">Flight SW2847 delayed 30 minutes due to weather. Crew is providing updates every 10 minutes.</p>
+                            <div style="margin-top: 8px;">
+                                <span style="color: #4ecdc4; font-size: 12px;">✓ Verified Traveler</span>
+                                <span style="margin-left: 16px; color: #666; font-size: 12px;">👍 12 helpful</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-secondary">Share Intel</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Community Stats</h3>
+                        <div class="community-stat">
+                            <div>
+                                <div>Active Contributors</div>
+                                <div style="font-size: 12px; color: #666;">This month</div>
+                            </div>
+                            <div class="stat-value">2,847</div>
+                        </div>
+                        <div class="community-stat">
+                            <div>
+                                <div>Intel Reports</div>
+                                <div style="font-size: 12px; color: #666;">Last 24 hours</div>
+                            </div>
+                            <div class="stat-value">156</div>
+                        </div>
+                        <div class="community-stat">
+                            <div>
+                                <div>AI Improvements</div>
+                                <div style="font-size: 12px; color: #666;">From community feedback</div>
+                            </div>
+                            <div class="stat-value">23</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Your Contributions</h3>
+                        <div class="points-display">
+                            <div class="points-number">450</div>
+                            <div>Community Points</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 600; color: #304cb2;">12</div>
+                                <div style="font-size: 12px; color: #666;">Intel Shared</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 600; color: #304cb2;">8</div>
+                                <div style="font-size: 12px; color: #666;">Feedback Given</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 600; color: #304cb2;">95%</div>
+                                <div style="font-size: 12px; color: #666;">Helpful Rating</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Beta Program</h3>
+                        <p>Test new AI features before they launch</p>
+                        <div style="margin: 16px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Smart Rebooking AI</span>
+                                <span style="background: #e8f2ff; color: #304cb2; padding: 4px 8px; border-radius: 12px; font-size: 12px;">Testing</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary">Join Beta Program</button>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-
